@@ -8,13 +8,22 @@ import { ExternalIcon, GithubIcon } from "@/components/icons"
 export function Projects() {
   const { t } = useLanguage()
 
+  const projects = t.projects.items as Array<{
+    name: string
+    desc: string
+    stack: string[]
+    link?: string
+    repo?: string
+    inProgress?: boolean
+  }>
+
   return (
     <section id="projects" className="relative px-5 py-24">
       <div className="mx-auto max-w-5xl">
         <SectionHeading kicker={t.projects.kicker} heading={t.projects.heading} />
 
         <div className="grid gap-6 sm:grid-cols-2">
-          {t.projects.items.map((p, i) => (
+          {projects.map((p, i) => (
             <Reveal key={p.name} delay={i * 90}>
               <article className="cursor-react group relative h-full overflow-hidden rounded-2xl border border-border bg-white/[0.03] p-6">
                 <div
@@ -36,7 +45,7 @@ export function Projects() {
                   <p className="mt-3 text-pretty text-sm leading-relaxed text-muted">{p.desc}</p>
 
                   <div className="mt-4 flex flex-wrap gap-2">
-                    {p.stack.map((s) => (
+                    {p.stack.map((s: string) => (
                       <span
                         key={s}
                         className="rounded-md bg-white/5 px-2.5 py-1 text-xs font-medium text-foreground/80"

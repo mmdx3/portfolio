@@ -51,7 +51,7 @@ export function Education() {
                     <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/5">
                       <div
                         className="h-full rounded-full bg-gradient-to-r from-primary to-accent"
-                        style={{ width: l.level === "Native" || l.level === "زبان مادری" ? "100%" : "65%" }}
+                        style={{ width: ["Native", "زبان مادری"].includes(l.level as string) ? "100%" : "65%" }}
                       />
                     </div>
                   </div>

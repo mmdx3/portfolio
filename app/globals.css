@@ -1,0 +1,143 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #0a0a0f;
+  --color-surface: #12121a;
+  --color-foreground: #f4f4f6;
+  --color-muted: #a1a1b5;
+
+  --color-primary: #7c3aed;
+  --color-primary-light: #a78bfa;
+  --color-primary-dark: #5b21b6;
+
+  --color-accent: #22d3ee;
+  --color-accent-pink: #f472b6;
+
+  --color-border: rgba(255, 255, 255, 0.08);
+
+  --font-sans: var(--font-inter), var(--font-vazirmatn), ui-sans-serif, system-ui, sans-serif;
+  --font-fa: var(--font-vazirmatn), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-glow: glow 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-16px); }
+}
+
+@keyframes glow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.9; }
+}
+
+* {
+  border-color: var(--color-border);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+html[dir="rtl"] body {
+  font-family: var(--font-fa);
+}
+
+::selection {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--color-primary-dark), var(--color-primary));
+  border-radius: 9999px;
+}
+
+@utility glass {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+@utility glass-strong {
+  background: rgba(18, 18, 26, 0.72);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Interactive cursor-reactive elements (works in both LTR and RTL). */
+.cursor-react {
+  --gx: 50%;
+  --gy: 50%;
+  --ga: 0;
+  position: relative;
+  isolation: isolate;
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.35s ease;
+}
+
+/* Mouse-following emerald spotlight, painted above the element's background
+   but below its content (z-index: -1 inside the isolated stacking context). */
+.cursor-react::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: -1;
+  opacity: var(--ga);
+  transition: opacity 0.35s ease;
+  background: radial-gradient(
+    220px circle at var(--gx) var(--gy),
+    rgba(16, 185, 129, 0.18),
+    rgba(20, 184, 166, 0.08) 45%,
+    transparent 70%
+  );
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .cursor-react:hover {
+    transform: translateY(-4px) scale(1.02);
+    border-color: rgba(16, 185, 129, 0.5);
+    box-shadow:
+      0 18px 50px -18px rgba(16, 185, 129, 0.4),
+      0 0 0 1px rgba(16, 185, 129, 0.18);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .cursor-react,
+  .cursor-react:hover { transform: none; transition: none; }
+  .cursor-react::after { display: none; }
+}
